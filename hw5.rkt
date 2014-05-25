@@ -23,15 +23,18 @@
 ;; Problem 1
 
 (define (racketlist->mupllist rktlst)
-  (if (null? rktlst)
-      (aunit)
-      (apair (car rktlst) (racketlist->mupllist (cdr rktlst)))))
+  (cond [(null? rktlst)
+         (aunit)]
+        [(list? rktlst)
+         (apair (racketlist->mupllist (car rktlst)) (racketlist->mupllist (cdr rktlst)))]
+        [#t rktlst]))
 
 (define (mupllist->racketlist mupllst)
-  (if (apair? mupllst)
-      (cons (apair-e1 mupllst) (mupllist->racketlist (apair-e2 mupllst)))
-      null))
-      
+  (cond [(aunit? mupllst) null]
+        [(apair? mupllst)
+         (cons (mupllist->racketlist (apair-e1 mupllst)) (mupllist->racketlist (apair-e2 mupllst)))]
+        [#t mupllst]))
+
 ;; Problem 2
 
 ;; lookup a variable in an environment
